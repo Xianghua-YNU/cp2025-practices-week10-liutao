@@ -9,7 +9,7 @@ def main():
         script_dir = os.path.dirname(os.path.abspath(__file__))  # 脚本所在目录
         repo_root = os.path.dirname(script_dir)                # 仓库根目录
         data_dir = os.path.join(repo_root, 'Exp4-数据积分')             # 数据目录
-        file_path = os.path.join(data_dir, 'Velocities.txt')   # 目标文件
+        data_file = os.path.join(data_dir, 'Velocities.txt')   # 目标文件
 
 
         # 调试信息
