@@ -1,52 +1,57 @@
-import sys
-import os
+
 import numpy as np
-import pytest
 
-# 添加父目录到系统路径以导入被测试模块
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-#from solution.simpson_integration_solution import f, trapezoidal, simpson
-from simpson_integration import f, trapezoidal, simpson
+# 待积分函数
 
-class TestSimpsonIntegration:
-    """测试Simpson积分法与梯形法则"""
-    
-    def test_f_function(self):
-        """测试被积函数f(x) = x^4 - 2x + 1"""
-        assert f(0) == 1
-        assert f(1) == 0
-        assert f(2) == 13
-        assert np.isclose(f(0.5), 0.0625 - 1 + 1)
-    
-    def test_trapezoidal_integration(self):
-        """测试梯形法则积分"""
-        # 已知精确解为4.4
-        result = trapezoidal(f, 0, 2, 1000)
-        assert np.isclose(result, 4.4, rtol=1e-4)
-        
-    def test_simpson_integration(self):
-        """测试Simpson法则积分"""
-        # 已知精确解为4.4
-        result = simpson(f, 0, 2, 1000)
-        assert np.isclose(result, 4.4, rtol=1e-6)
-        
-    def test_simpson_odd_N(self):
-        """测试当N为奇数时Simpson法则应抛出异常"""
-        with pytest.raises(ValueError, match="Simpson 法则要求 N 必须为偶数"):
-            simpson(f, 0, 2, 999)
-            
-    def test_methods_comparison(self):
-        """比较两种方法的精度"""
-        trapezoidal_result = trapezoidal(f, 0, 2, 100)
-        simpson_result = simpson(f, 0, 2, 100)
-        exact = 4.4
-        
-        trapezoidal_error = abs(trapezoidal_result - exact) / exact
-        simpson_error = abs(simpson_result - exact) / exact
-        
-        # Simpson法则误差应小于梯形法则
-        assert simpson_error < trapezoidal_error
 
-if __name__ == "__main__":
-    # 运行所有测试
-    pytest.main([__file__])
+def f(x):
+    return x**4 - 2*x + 1
+
+# 已给出的梯形法则积分函数，供参考比较用
+
+
+def trapezoidal(f, a, b, N):
+    h = (b - a) / N
+    x = np.linspace(a, b, N+1)
+    fx = f(x)
+    integral = h * (0.5 * fx[0] + np.sum(fx[1:-1]) + 0.5 * fx[-1])
+    return integral
+
+# Simpson 法则积分函数
+
+
+def simpson(f, a, b, N):
+    if N % 2 != 0:
+        raise ValueError("Simpson 法则要求 N 必须为偶数")
+    h = (b - a) / N
+    x = np.linspace(a, b, N+1)
+    fx = f(x)
+    # 奇数索引（1,3,5,...,N-1）
+    odd_sum = np.sum(fx[1:N:2])
+    # 偶数索引（2,4,6,...,N-2）
+    even_sum = np.sum(fx[2:N:2])
+    integral = h / 3 * (fx[0] + 4 * odd_sum + 2 * even_sum + fx[N])
+    return integral
+
+
+def main():
+    a, b = 0, 2
+    exact_integral = 4.4
+
+    for N in [100, 1000]:
+        trapezoidal_result = trapezoidal(f, a, b, N)
+        simpson_result = simpson(f, a, b, N)
+
+        trapezoidal_error = abs(trapezoidal_result -
+                                exact_integral) / exact_integral
+        simpson_error = abs(simpson_result - exact_integral) / exact_integral
+
+        print(f"N = {N}")
+        print(
+            f"梯形法则结果: {trapezoidal_result:.8f}, 相对误差: {trapezoidal_error:.2e}")
+        print(f"Simpson法则结果: {simpson_result:.8f}, 相对误差: {simpson_error:.2e}")
+        print("-" * 40)
+
+
+if __name__ == '__main__':
+    main()
