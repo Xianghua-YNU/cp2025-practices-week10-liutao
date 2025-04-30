@@ -9,7 +9,7 @@ def main():
         data_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         data_file = os.path.join(data_dir, 'Velocities.txt')
         
-        git add /Velocities.txt
+        git add /home/runner/work/cp2025-practices-week10-liutao/cp2025-practices-week10-liutao/Exp4-数据积分/Velocities.txt
         git commit -m "添加数据文件"
         git push
         
