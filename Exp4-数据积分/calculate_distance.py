@@ -6,8 +6,12 @@ import os
 def main():
     try:
         # 1. 获取数据文件路径（TODO：使用绝对路径）
-        data_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        data_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         data_file = os.path.join(data_dir, 'Velocities.txt')
+        
+        git add /Velocities.txt
+        git commit -m "添加数据文件"
+        git push
         
         # 调试信息
         print(f"[DEBUG] 当前工作目录: {os.getcwd()}")
