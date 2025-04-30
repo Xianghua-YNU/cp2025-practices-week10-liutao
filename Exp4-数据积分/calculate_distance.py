@@ -5,7 +5,7 @@ import os
 
 def main():
     try:
-        # 1. 获取数据文件路径（TODO：使用相对路径）
+        # 1. 获取数据文件路径（TODO：使用绝对路径）
         data_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         data_file = os.path.join(data_dir, 'Velocities.txt')
 
