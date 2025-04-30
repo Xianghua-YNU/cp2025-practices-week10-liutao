@@ -6,19 +6,29 @@ import os
 def main():
     try:
         # 1. 获取数据文件路径（TODO：使用相对路径）
-        data_file = None
-        
+        print("[调试] 当前工作目录:", os.getcwd())
+        data_file = 'Velocities.txt'
+        print("[调试] 尝试读取的完整路径:", os.path.abspath(file_path))
+
+        # 检查文件是否存在
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"错误：文件 {os.path.abspath(file_path)} 不存在！")
         # 2. 读取数据（TODO：使用numpy.loadtxt）
-        data = None
-        t = None  # 时间列
-        v = None  # 速度列
+        try:
+            data = np.loadtxt(file_path)
+        except Exception as e:
+            print(f"读取文件失败: {e}")
+            exit()
+
+        t = data[:, 0]  # 时间列
+        v = data[:, 1]  # 速度列
 
         # 3. 计算总距离（TODO：使用numpy.trapz）
-        total_distance = None
+        total_distance = np.trapz(v, t)
         print(f"总运行距离: {total_distance:.2f} 米")
 
         # 4. 计算累积距离（TODO：使用cumulative_trapezoid）
-        distance = None
+        distance = cumulative_trapezoid(v, t, initial=0)
 
         # 5. 绘制图表
         plt.figure(figsize=(10, 6))
