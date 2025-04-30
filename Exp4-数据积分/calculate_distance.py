@@ -8,7 +8,7 @@ def main():
         # 1. 获取数据文件路径（TODO：使用相对路径）
         print("[调试] 当前工作目录:", os.getcwd())
         data_file = 'Velocities.txt'
-        print("[调试] 尝试读取的完整路径:", os.path.abspath(file_path))
+        print("[调试] 尝试读取的完整路径:", os.path.abspath(data_file))
 
         # 检查文件是否存在
         if not os.path.exists(data_file):
