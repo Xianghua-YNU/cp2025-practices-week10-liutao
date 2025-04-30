@@ -6,15 +6,16 @@ import os
 def main():
     try:
         # 1. 获取数据文件路径（TODO：使用相对路径）
-        data_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        data_file = os.path.join(data_dir, 'Velocities.txt')
+        print("[调试] 当前工作目录:", os.getcwd())
+        data_file = 'Velocities.txt'
+        print("[调试] 尝试读取的完整路径:", os.path.abspath(file_path))
 
         # 检查文件是否存在
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(f"错误：文件 {os.path.abspath(file_path)} 不存在！")
+        if not os.path.exists(data_file):
+            raise FileNotFoundError(f"错误：文件 {os.path.abspath(data_file)} 不存在！")
         # 2. 读取数据（TODO：使用numpy.loadtxt）
         try:
-            data = np.loadtxt(file_path)
+            data = np.loadtxt(data_file)
         except Exception as e:
             print(f"读取文件失败: {e}")
             exit()
